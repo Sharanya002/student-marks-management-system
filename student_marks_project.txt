@@ -1,0 +1,47 @@
+CREATE TABLE STUDENTS (
+  Student_id SERIAL PRIMARY KEY,
+  Student_name varchar(50),
+  Class varchar(10)
+);
+
+CREATE TABLE SUBJECTS (
+  Sub_id SERIAL PRIMARY KEY,
+  Sub_name varchar(50)
+);
+
+CREATE TABLE MARKS (
+Marks_id SERIAL PRIMARY KEY,
+Student_id INT REFERENCES Students(Student_id),
+Sub_id INT REFERENCES SUBJECTS(Sub_id),
+Marks INT CHECK (Marks BETWEEN 0 AND 100)
+);
+
+
+
+INSERT INTO STUDENTS (Student_name, Class)
+VALUES ('AISHU', '10A'),
+       ('MOUNKIA', '10A'),
+	   ('VARUN', '10B' );
+
+INSERT INTO SUBJECTS (Sub_name)
+VALUES ('MATHS'), ('SCIENCE'), ('SOCIAL');
+
+INSERT INTO MARKS (Student_id, Sub_id, Marks)
+VALUES (1,1,90), 
+       (1,2,70),
+	   (2,1,83),
+	   (2,3,99),
+	   (3,3,66);
+
+SELECT * FROM MARKS;	
+
+SELECT Student_Name, ROUND(AVG(marks),2) AS Avg_marks FROM students
+JOIN MARKS USING (Student_id) GROUP BY Student_Name ORDER BY avg_marks Desc;
+
+SELECT s.student_name, sub.sub_name, m.marks
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+JOIN subjects sub ON m.sub_id = sub.sub_id;
+
+
+
